@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeFood Academy - Formation en Sécurité Alimentaire</title>
+    <meta name="description" content="SafeFood Academy — parcours et quiz pour maîtriser la sécurité alimentaire : HACCP, hygiène, allergènes, traçabilité et conservation.">
+    <meta name="theme-color" content="#2d5016">
+    <link rel="icon" href="/favicon.ico">
+    <meta property="og:title" content="SafeFood Academy - Sécurité Alimentaire">
+    <meta property="og:description" content="Parcours et quiz pour professionnels et particuliers sur la sécurité alimentaire.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d5016;
+            --primary-light: #4a7c2a;
+            --secondary: #ff6b35;
+            --accent: #f7b731;
+            --success: #26de81;
+            --danger: #fc5c65;
+            --bg-main: #fafaf9;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-medium: #4a5568;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Accessibility & reduced motion */
+        .skip-link {
+            position: absolute;
+            left: -999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .skip-link:focus {
+            left: 1rem;
+            top: 1rem;
+            width: auto;
+            height: auto;
+            background: white;
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            z-index: 9999;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transform: rotate(-5deg);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav .nav-button {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            background: linear-gradient(to bottom, rgba(77, 124, 42, 0.05) 0%, transparent 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-medium);
+            max-width: 600px;
+            font-family: 'Literata', serif;
+        }
+
+        /* Dashboard Grid */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .progress-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .progress-bar-container {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary-light) 100%);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* Badges */
+        .badges-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .badges-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 15px;
+            background: var(--bg-main);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .badge.earned {
+            background: linear-gradient(135deg, rgba(247, 183, 49, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%);
+            border: 2px solid var(--accent);
+        }
+
+        .badge.locked {
+            opacity: 0.4;
+            filter: grayscale(100%);
+        }
+
+        .badge:hover:not(.locked) {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .badge-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+        }
+
+        .badge.locked .badge-icon {
+            background: #cbd5e0;
+        }
+
+        .badge-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: 80vh;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab:hover {
+            color: var(--primary-light);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Quiz Cards */
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .quiz-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary-light);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-category {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-category.particulier {
+            background: var(--secondary);
+        }
+
+        .quiz-status {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .quiz-status.completed {
+            color: var(--success);
+        }
+
+        .quiz-status.in-progress {
+            color: var(--accent);
+        }
+
+        .quiz-status.not-started {
+            color: var(--text-light);
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--text-dark);
+        }
+
+        .quiz-description {
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            font-family: 'Literata', serif;
+        }
+
+        .quiz-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .quiz-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .quiz-progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            transition: width 0.5s ease;
+        }
+
+        .quiz-score {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+            font-weight: 600;
+        }
+
+        /* Quiz View */
+        .quiz-view {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            margin-bottom: 2rem;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-option {
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-light);
+            background: rgba(77, 124, 42, 0.05);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--primary);
+            background: rgba(77, 124, 42, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: rgba(38, 222, 129, 0.1);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--danger);
+            background: rgba(252, 92, 101, 0.1);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(77, 124, 42, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        /* Articles */
+        .articles-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 4px solid var(--primary);
+        }
+
+        .article-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .article-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .article-excerpt {
+            color: var(--text-medium);
+            margin-bottom: 1rem;
+            font-family: 'Literata', serif;
+            line-height: 1.7;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* Results */
+        .results-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .results-score {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+        }
+
+        .results-message {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .results-badge-earned {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(247, 183, 49, 0.2) 0%, rgba(255, 107, 53, 0.2) 100%);
+            border-radius: 20px;
+            margin: 2rem 0;
+            border: 2px solid var(--accent);
+        }
+
+        .results-badge-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .recommended-articles {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .recommended-articles h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .badges-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .badges-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            .tab {
+                white-space: nowrap;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Modal (login / admin) */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal h3 { margin-bottom: 0.5rem; color: var(--primary); }
+
+        .form-row { display:flex; gap:0.5rem; margin-bottom:0.75rem; }
+        .form-row input, .form-row select { flex:1; padding:0.6rem 0.75rem; border-radius:8px; border:1px solid var(--border); }
+
+        .small { font-size:0.9rem; color:var(--text-medium); }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#homeView">Passer au contenu</a>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🍽️</div>
+                    <span>SafeFood Academy</span>
+                </div>
+                <nav>
+                    <button type="button" class="nav-button" onclick="showView('home')">Accueil</button>
+                    <button type="button" class="nav-button" onclick="showView('dashboard')">Tableau de bord</button>
+                    <button type="button" class="nav-button" onclick="showView('dashboard')">Quiz</button>
+                    <button type="button" class="nav-button" onclick="showView('dashboard')">Articles</button>
+                    <div class="user-info">
+                        <div class="user-avatar">JD</div>
+                        <span id="userName">Jean Dupont</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainView" role="main">
+        <noscript>
+            <div role="alert" style="padding:1rem;border-radius:6px;background:#fff3cd;color:#856404;margin:1rem 2rem;">
+                JavaScript est requis pour utiliser l'application. Activez JavaScript dans votre navigateur.
+            </div>
+        </noscript>
+        <!-- Home / Landing View -->
+        <div id="homeView" style="padding:4rem 0;">
+            <div class="container">
+                <section class="hero" aria-labelledby="homeTitle">
+                    <h1 id="homeTitle">Bienvenue sur SafeFood Academy</h1>
+                    <p style="font-size:1.125rem;color:var(--text-medium);max-width:760px;margin:1rem 0;">
+                        SafeFood Academy vous aide à apprendre et évaluer vos connaissances en sécurité alimentaire :
+                        formations, quiz pratiques, recommandations et badges pour suivre votre progression —
+                        que vous soyez professionnel de la restauration ou cuisinier à la maison.
+                    </p>
+                    <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
+                        <button class="btn btn-primary" onclick="openLogin()" aria-label="Se connecter à SafeFood Academy">Se connecter</button>
+                        <button class="btn btn-secondary" onclick="showView('dashboard')">Voir mon tableau de bord</button>
+                    </div>
+                </section>
+
+                <section style="margin-top:2.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;">
+                    <div class="article-card">
+                        <h3 class="article-title">Pourquoi utiliser ce site ?</h3>
+                        <p class="article-excerpt">Consolidez vos connaissances, identifiez vos points faibles et suivez votre progression avec des quiz ciblés et des articles pratiques.</p>
+                    </div>
+                    <div class="article-card">
+                        <h3 class="article-title">Pour qui ?</h3>
+                        <p class="article-excerpt">Professionnels de la restauration, formateurs, et particuliers soucieux de la sécurité alimentaire domestique.</p>
+                    </div>
+                    <div class="article-card">
+                        <h3 class="article-title">Comment ça marche ?</h3>
+                        <p class="article-excerpt">Connectez-vous, lancez des quiz, consultez vos résultats et débloquez des badges lorsque vous atteignez les objectifs.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Admin View -->
+        <div id="adminView" style="display:none;padding:2rem 0;">
+            <div class="container">
+                <h2 style="color:var(--primary);margin-bottom:1rem;">Panneau d'administration — Gestion des comptes</h2>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+                    <div class="small">Nombre de comptes : <strong id="accountCount">0</strong></div>
+                    <div style="display:flex;gap:0.5rem;">
+                        <button class="btn btn-secondary" onclick="renderAdminPanel()">Rafraîchir</button>
+                        <button class="btn btn-primary" onclick="showView('dashboard')">Retour au tableau</button>
+                    </div>
+                </div>
+
+                <div id="accountsList" style="margin-bottom:1.5rem;"></div>
+
+                <div style="background:var(--bg-card);padding:1rem;border-radius:12px;box-shadow:0 6px 18px var(--shadow);">
+                    <h3 style="margin-bottom:0.5rem;color:var(--primary);">Ajouter un compte</h3>
+                    <div class="form-row">
+                        <input id="newUsername" placeholder="Nom d'utilisateur (login)" />
+                        <input id="newName" placeholder="Nom affiché" />
+                    </div>
+                    <div class="form-row">
+                        <input id="newEmail" placeholder="Email" />
+                        <select id="newRole">
+                            <option value="user">Utilisateur</option>
+                            <option value="admin">Administrateur</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input id="newPassword" placeholder="Mot de passe" type="password" />
+                        <button class="btn btn-primary" onclick="addAccount()">Créer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Dashboard View -->
+        <div id="dashboardView">
+            <section class="hero">
+                <div class="container">
+                    <h1>Maîtrisez la sécurité alimentaire</h1>
+                    <p>Apprenez, progressez et obtenez des badges en démontrant votre expertise en sécurité alimentaire professionnelle et domestique.</p>
+                </div>
+            </section>
+
+            <div class="container">
+                <div class="dashboard">
+                    <aside class="sidebar">
+                        <div class="progress-card">
+                            <h3>📊 Votre progression</h3>
+                            <div class="stat-item">
+                                <span class="stat-label">Quiz complétés</span>
+                                <span class="stat-value" id="completedQuizzes">0/8</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Score moyen</span>
+                                <span class="stat-value" id="averageScore">0%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Badges gagnés</span>
+                                <span class="stat-value" id="badgesEarned">0/8</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-label">
+                                    <span>Progression globale</span>
+                                    <span id="globalProgress">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="globalProgressBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="badges-section">
+                            <h3>🏆 Vos badges</h3>
+                            <div class="badges-grid" id="badgesGrid">
+                                <!-- Badges will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </aside>
+
+                    <main class="main-content">
+                        <div class="tabs">
+                            <button type="button" class="tab active" onclick="switchTab('pro', event)">Quiz Professionnels</button>
+                            <button type="button" class="tab" onclick="switchTab('particulier', event)">Quiz Particuliers</button>
+                            <button type="button" class="tab" onclick="switchTab('articles', event)">Articles recommandés</button>
+                        </div>
+
+                        <div id="proContent" class="tab-content active">
+                            <div class="quiz-grid" id="proQuizGrid">
+                                <!-- Quiz cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div id="particulierContent" class="tab-content">
+                            <div class="quiz-grid" id="particulierQuizGrid">
+                                <!-- Quiz cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div id="articlesContent" class="tab-content">
+                            <div class="articles-grid" id="articlesGrid">
+                                <!-- Articles will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz View -->
+        <div id="quizView" style="display: none;">
+            <div class="container" style="padding: 3rem 2rem;">
+                <button class="btn btn-secondary" onclick="showView('dashboard')" style="margin-bottom: 2rem;">
+                    ← Retour au tableau de bord
+                </button>
+                <div class="quiz-view">
+                    <div class="quiz-question">
+                        <span class="question-number" id="questionNumber">Question 1/10</span>
+                        <h2 class="question-text" id="questionText"></h2>
+                    </div>
+                    <div class="quiz-options" id="quizOptions">
+                        <!-- Options will be populated by JavaScript -->
+                    </div>
+                    <div class="quiz-navigation">
+                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" style="visibility: hidden;">Précédent</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Suivant</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results View -->
+        <div id="resultsView" style="display: none;">
+            <div class="container" style="padding: 3rem 2rem;">
+                <div class="results-container">
+                    <h2>Quiz terminé !</h2>
+                    <div class="results-score" id="finalScore" aria-live="polite">0%</div>
+                    <p class="results-message" id="resultsMessage" aria-live="polite"></p>
+                    <div id="badgeEarnedContainer"></div>
+                    <div class="recommended-articles" id="recommendedArticles"></div>
+                    <button class="btn btn-primary" onclick="showView('dashboard')" style="margin-top: 2rem;">
+                        Retour au tableau de bord
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="background: #fff; border-top: 1px solid var(--border); padding: 2rem 0;">
+        <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <div style="color:var(--text-medium);font-size:0.95rem;">© <strong>SafeFood Academy</strong> — Tous droits réservés</div>
+            <div style="display:flex;gap:1rem;align-items:center;">
+                <a href="#" style="color:var(--primary);text-decoration:none;font-weight:600;">Mentions légales</a>
+                <a href="#" style="color:var(--text-medium);text-decoration:none;">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal Backdrop -->
+    <div id="loginBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal" role="document" aria-labelledby="loginTitle">
+            <h3 id="loginTitle">Se connecter à SafeFood Academy</h3>
+            <div class="form-row">
+                <input id="loginUsername" placeholder="Nom d'utilisateur" />
+            </div>
+            <div class="form-row">
+                <input id="loginPassword" type="password" placeholder="Mot de passe" />
+            </div>
+            <div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:0.5rem;">
+                <button class="btn btn-secondary" onclick="closeLogin()">Annuler</button>
+                <button class="btn btn-primary" onclick="handleLogin()">Se connecter</button>
+            </div>
+            <p class="small" style="margin-top:0.75rem;">Démo : compte administrateur <strong>admin</strong> / <strong>adminpass</strong></p>
+        </div>
+    </div>
+    <script>
+        // Data structure
+        const userData = {
+            name: 'Jean Dupont',
+            quizzes: {},
+            badges: []
+        };
+
+        // Configurable login behavior (modal or redirect)
+        const loginMode = 'modal'; // 'modal' or 'redirect'
+        const loginUrl = 'https://safefood.academy/login';
+
+        // Accounts storage key and sample data (demo only)
+        const ACCOUNTS_KEY = 'safefood_accounts';
+
+        function ensureSampleAccounts() {
+            const raw = localStorage.getItem(ACCOUNTS_KEY);
+            if (!raw) {
+                const sample = [
+                    { username: 'admin', name: 'Administrateur', email: 'admin@safefood.local', role: 'admin', password: 'adminpass' },
+                    { username: 'jeand', name: 'Jean Dupont', email: 'jean@example.com', role: 'user', password: 'password' },
+                    { username: 'marie', name: 'Marie Dubois', email: 'marie@example.com', role: 'user', password: 'password' }
+                ];
+                localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(sample));
+            }
+        }
+
+        const badges = [
+            { id: 'haccp', name: 'Expert HACCP', icon: '🎖️', category: 'pro' },
+            { id: 'hygiene', name: 'Hygiène Pro', icon: '🧼', category: 'pro' },
+            { id: 'allergenes', name: 'Maître Allergènes', icon: '🥜', category: 'pro' },
+            { id: 'traçabilite', name: 'Traçabilité', icon: '📋', category: 'pro' },
+            { id: 'conservation', name: 'Conservation Expert', icon: '❄️', category: 'particulier' },
+            { id: 'cuisson', name: 'Chef Cuisson', icon: '🔥', category: 'particulier' },
+            { id: 'etiquetage', name: 'Lecteur Étiquettes', icon: '🏷️', category: 'particulier' },
+            { id: 'dechets', name: 'Zéro Gaspillage', icon: '♻️', category: 'particulier' }
+        ];
+
+        const quizzes = [
+                {
+                id: 'haccp',
+                category: 'pro',
+                title: 'Principes HACCP',
+                description: 'Maîtrisez les 7 principes fondamentaux du système HACCP pour garantir la sécurité alimentaire.',
+                questionsCount: 10,
+                duration: 15,
+                badge: 'haccp',
+                questions: [
+                    {
+                        text: "Que signifie l'acronyme HACCP ?",
+                        options: [
+                            "Hazard Analysis Critical Control Point",
+                            "Health Analysis Clean Control Process",
+                            "Hygiene Assessment Critical Care Point",
+                            "Health And Critical Control Procedure"
+                        ],
+                        correct: 0,
+                        topic: "Introduction HACCP"
+                    },
+                    {
+                        text: "Combien de principes comporte le système HACCP ?",
+                        options: ["5 principes", "7 principes", "10 principes", "12 principes"],
+                        correct: 1,
+                        topic: "Principes HACCP"
+                    },
+                    {
+                        text: "Quelle est la première étape de l'HACCP ?",
+                        options: [
+                            "Établir les limites critiques",
+                            "Identifier les dangers",
+                            "Constituer l'équipe HACCP",
+                            "Déterminer les points critiques"
+                        ],
+                        correct: 2,
+                        topic: "Mise en œuvre HACCP"
+                    },
+                    {
+                        text: "Qu'est-ce qu'un CCP (Point Critique de Contrôle) ?",
+                        options: [
+                            "Un point où le contrôle est souhaitable",
+                            "Un point où le contrôle est essentiel pour prévenir un danger",
+                            "Un point de contrôle de la qualité",
+                            "Un point de contrôle des coûts"
+                        ],
+                        correct: 1,
+                        topic: "Points critiques"
+                    },
+                    {
+                        text: "À quelle température doit-on refroidir rapidement un plat cuisiné ?",
+                        options: [
+                            "De 63°C à 10°C en moins de 2 heures",
+                            "De 63°C à 10°C en moins de 3 heures",
+                            "De 70°C à 4°C en moins de 2 heures",
+                            "De 80°C à 0°C en moins de 4 heures"
+                        ],
+                        correct: 0,
+                        topic: "Températures critiques"
+                    },
+                    {
+                        text: "Quelle est la zone de danger pour la multiplication bactérienne ?",
+                        options: [
+                            "Entre -5°C et 5°C",
+                            "Entre 0°C et 10°C",
+                            "Entre 10°C et 63°C",
+                            "Entre 20°C et 80°C"
+                        ],
+                        correct: 2,
+                        topic: "Températures critiques"
+                    },
+                    {
+                        text: "Que doit contenir un plan HACCP documenté ?",
+                        options: [
+                            "Uniquement les CCP identifiés",
+                            "Les procédures de nettoyage",
+                            "L'analyse des dangers, les CCP, les limites critiques et les procédures de surveillance",
+                            "Les recettes et les coûts"
+                        ],
+                        correct: 2,
+                        topic: "Documentation HACCP"
+                    },
+                    {
+                        text: "Quelle est la fréquence recommandée pour réviser un plan HACCP ?",
+                        options: [
+                            "Tous les 5 ans",
+                            "Une fois par an minimum et à chaque modification",
+                            "Seulement en cas de problème",
+                            "Jamais, une fois établi"
+                        ],
+                        correct: 1,
+                        topic: "Maintenance HACCP"
+                    },
+                    {
+                        text: "Quel est le principal danger biologique en cuisine ?",
+                        options: [
+                            "Les métaux lourds",
+                            "Les pesticides",
+                            "Les bactéries pathogènes",
+                            "Les allergènes"
+                        ],
+                        correct: 2,
+                        topic: "Dangers biologiques"
+                    },
+                    {
+                        text: "Que signifie une action corrective en HACCP ?",
+                        options: [
+                            "Nettoyer la cuisine",
+                            "Former le personnel",
+                            "Action entreprise lorsqu'une limite critique est dépassée",
+                            "Améliorer une recette"
+                        ],
+                        correct: 2,
+                        topic: "Actions correctives"
+                    }
+                ]
+            },
+            {
+                id: 'hygiene',
+                category: 'pro',
+                title: 'Hygiène en restauration',
+                description: 'Apprenez les bonnes pratiques d\'hygiène essentielles en milieu professionnel.',
+                questionsCount: 10,
+                duration: 12,
+                badge: 'hygiene',
+                questions: [
+                    {
+                        text: "Quelle est la durée minimale recommandée pour un lavage des mains efficace ?",
+                        options: ["10 secondes", "20 secondes", "30 secondes", "1 minute"],
+                        correct: 2,
+                        topic: "Hygiène personnelle"
+                    },
+                    {
+                        text: "À quelle fréquence faut-il se laver les mains en cuisine professionnelle ?",
+                        options: [
+                            "Une fois par jour",
+                            "Toutes les heures",
+                            "Avant chaque nouvelle tâche et après contamination",
+                            "Seulement avant de commencer le service"
+                        ],
+                        correct: 2,
+                        topic: "Hygiène personnelle"
+                    },
+                    {
+                        text: "Le port de bijoux en cuisine professionnelle est :",
+                        options: [
+                            "Autorisé sans restriction",
+                            "Interdit sauf alliance lisse",
+                            "Autorisé si désinfectés",
+                            "Interdit totalement"
+                        ],
+                        correct: 3,
+                        topic: "Tenue professionnelle"
+                    },
+                    {
+                        text: "Quelle est la température de lavage recommandée pour le linge professionnel ?",
+                        options: ["40°C minimum", "60°C minimum", "80°C minimum", "100°C"],
+                        correct: 1,
+                        topic: "Entretien du linge"
+                    },
+                    {
+                        text: "Un employé malade (gastro-entérite) doit :",
+                        options: [
+                            "Continuer à travailler avec un masque",
+                            "Être écarté de la manipulation des aliments",
+                            "Travailler uniquement en plonge",
+                            "Porter des gants supplémentaires"
+                        ],
+                        correct: 1,
+                        topic: "Santé du personnel"
+                    },
+                    {
+                        text: "Quelle est la méthode correcte pour essuyer un plan de travail ?",
+                        options: [
+                            "Utiliser le même torchon toute la journée",
+                            "Utiliser des lavettes à usage unique ou désinfectées",
+                            "Utiliser son tablier",
+                            "Laisser sécher à l'air"
+                        ],
+                        correct: 1,
+                        topic: "Nettoyage et désinfection"
+                    },
+                    {
+                        text: "Les planches à découper doivent être :",
+                        options: [
+                            "Nettoyées une fois par semaine",
+                            "Utilisées pour tous les aliments",
+                            "Codées par couleur selon les aliments",
+                            "Uniquement en bois"
+                        ],
+                        correct: 2,
+                        topic: "Marche en avant"
+                    },
+                    {
+                        text: "Que signifie la 'marche en avant' ?",
+                        options: [
+                            "Avancer rapidement en cuisine",
+                            "Principe de circulation évitant les contaminations croisées",
+                            "Méthode de service",
+                            "Technique de cuisson"
+                        ],
+                        correct: 1,
+                        topic: "Marche en avant"
+                    },
+                    {
+                        text: "Les déchets en cuisine doivent être :",
+                        options: [
+                            "Évacués une fois par semaine",
+                            "Stockés dans la zone de préparation",
+                            "Évacués régulièrement dans des poubelles fermées",
+                            "Mélangés avec les aliments périmés"
+                        ],
+                        correct: 2,
+                        topic: "Gestion des déchets"
+                    },
+                    {
+                        text: "Le port de gants à usage unique :",
+                        options: [
+                            "Remplace le lavage des mains",
+                            "Doit être complété par un lavage des mains avant et après",
+                            "N'est jamais nécessaire",
+                            "Est obligatoire en permanence"
+                        ],
+                        correct: 1,
+                        topic: "Équipements de protection"
+                    }
+                ]
+            },
+            {
+                id: 'allergenes',
+                category: 'pro',
+                title: 'Gestion des allergènes',
+                description: 'Identifiez et gérez les 14 allergènes majeurs pour protéger vos clients.',
+                questionsCount: 10,
+                duration: 10,
+                badge: 'allergenes',
+                questions: [
+                    {
+                        text: "Combien d'allergènes majeurs sont réglementés en Europe ?",
+                        options: ["8 allergènes", "12 allergènes", "14 allergènes", "20 allergènes"],
+                        correct: 2,
+                        topic: "Réglementation allergènes"
+                    },
+                    {
+                        text: "Lequel de ces aliments N'est PAS un des 14 allergènes majeurs ?",
+                        options: ["Sésame", "Lupin", "Riz", "Moutarde"],
+                        correct: 2,
+                        topic: "Liste des allergènes"
+                    },
+                    {
+                        text: "L'information sur les allergènes doit être :",
+                        options: [
+                            "Disponible uniquement sur demande",
+                            "Écrite et accessible avant l'achat",
+                            "Communiquée uniquement aux personnes allergiques",
+                            "Affichée dans la cuisine"
+                        ],
+                        correct: 1,
+                        topic: "Communication allergènes"
+                    },
+                    {
+                        text: "Que signifie 'contamination croisée' concernant les allergènes ?",
+                        options: [
+                            "Mélanger volontairement des allergènes",
+                            "Transfert accidentel d'allergènes d'un aliment à un autre",
+                            "Cuire des allergènes ensemble",
+                            "Servir des allergènes en même temps"
+                        ],
+                        correct: 1,
+                        topic: "Contamination croisée"
+                    },
+                    {
+                        text: "Pour éviter la contamination croisée, il faut :",
+                        options: [
+                            "Utiliser les mêmes ustensiles pour tous les plats",
+                            "Nettoyer entre chaque préparation",
+                            "Stocker tous les allergènes ensemble",
+                            "Cuisiner plus vite"
+                        ],
+                        correct: 1,
+                        topic: "Prévention contamination"
+                    },
+                    {
+                        text: "Les traces d'allergènes sur un produit :",
+                        options: [
+                            "N'ont pas besoin d'être mentionnées",
+                            "Doivent être indiquées si présence non intentionnelle",
+                            "Sont toujours dangereuses",
+                            "Disparaissent à la cuisson"
+                        ],
+                        correct: 1,
+                        topic: "Étiquetage"
+                    },
+                    {
+                        text: "Le céleri est un allergène qui peut se trouver dans :",
+                        options: [
+                            "Uniquement les salades",
+                            "Les bouillons, sauces et plats préparés",
+                            "Seulement le céleri frais",
+                            "Aucun plat cuisiné"
+                        ],
+                        correct: 1,
+                        topic: "Allergènes cachés"
+                    },
+                    {
+                        text: "Un client indique être allergique aux crustacés. Vous devez :",
+                        options: [
+                            "Lui conseiller de ne pas venir",
+                            "Vérifier tous les plats et ingrédients, y compris les sauces",
+                            "Simplement éviter les crevettes",
+                            "Lui dire que c'est sans risque"
+                        ],
+                        correct: 1,
+                        topic: "Gestion client"
+                    },
+                    {
+                        text: "Les sulfites (SO2) se trouvent souvent dans :",
+                        options: [
+                            "La viande fraîche",
+                            "Le vin, fruits secs, certains vinaigres",
+                            "Le pain",
+                            "Les légumes frais"
+                        ],
+                        correct: 1,
+                        topic: "Sulfites"
+                    },
+                    {
+                        text: "En cas de doute sur la présence d'un allergène :",
+                        options: [
+                            "On peut rassurer le client",
+                            "On doit informer le client du doute",
+                            "On peut servir le plat",
+                            "On supprime l'allergène en cuisinant"
+                        ],
+                        correct: 1,
+                        topic: "Gestion du risque"
+                    }
+                ]
+            },
+            {
+                id: 'traçabilite',
+                category: 'pro',
+                title: 'Traçabilité alimentaire',
+                description: 'Comprenez les obligations légales de traçabilité et leur mise en œuvre.',
+                questionsCount: 10,
+                duration: 12,
+                badge: 'traçabilite',
+                questions: [
+                    {
+                        text: "La traçabilité alimentaire permet de :",
+                        options: [
+                            "Connaître uniquement le prix des produits",
+                            "Suivre un produit de la production à la consommation",
+                            "Améliorer le goût des aliments",
+                            "Réduire les coûts"
+                        ],
+                        correct: 1,
+                        topic: "Définition traçabilité"
+                    },
+                    {
+                        text: "Combien de temps doit-on conserver les documents de traçabilité ?",
+                        options: [
+                            "1 mois",
+                            "6 mois",
+                            "Selon la DLUO/DLC + 6 mois minimum",
+                            "1 an"
+                        ],
+                        correct: 2,
+                        topic: "Conservation documents"
+                    },
+                    {
+                        text: "Que doit contenir un bon de livraison pour assurer la traçabilité ?",
+                        options: [
+                            "Uniquement le prix",
+                            "Date, fournisseur, produits, quantités, lot",
+                            "Seulement le nom du fournisseur",
+                            "Le poids total"
+                        ],
+                        correct: 1,
+                        topic: "Documentation"
+                    },
+                    {
+                        text: "En cas de rappel produit, la traçabilité permet de :",
+                        options: [
+                            "Ignorer le problème",
+                            "Identifier et retirer rapidement les lots concernés",
+                            "Vendre les produits moins cher",
+                            "Les donner"
+                        ],
+                        correct: 1,
+                        topic: "Gestion de crise"
+                    },
+                    {
+                        text: "Le numéro de lot sur un produit permet de :",
+                        options: [
+                            "Connaître le prix de vente",
+                            "Identifier précisément la production",
+                            "Savoir combien il en reste",
+                            "Déterminer la recette"
+                        ],
+                        correct: 1,
+                        topic: "Numérotation des lots"
+                    },
+                    {
+                        text: "La traçabilité ascendante concerne :",
+                        options: [
+                            "Les produits vendus aux clients",
+                            "Les produits reçus des fournisseurs",
+                            "Les produits en stock",
+                            "Les déchets"
+                        ],
+                        correct: 1,
+                        topic: "Types de traçabilité"
+                    },
+                    {
+                        text: "La traçabilité descendante concerne :",
+                        options: [
+                            "Les produits reçus",
+                            "Les produits vendus ou livrés",
+                            "Les employés",
+                            "L'équipement"
+                        ],
+                        correct: 1,
+                        topic: "Types de traçabilité"
+                    },
+                    {
+                        text: "Pour assurer une bonne traçabilité en cuisine, il faut :",
+                        options: [
+                            "Tout mélanger",
+                            "Appliquer la règle FIFO (First In First Out)",
+                            "Jeter les étiquettes",
+                            "Stocker sans ordre"
+                        ],
+                        correct: 1,
+                        topic: "Bonnes pratiques"
+                    },
+                    {
+                        text: "Que signifie 'DLC' ?",
+                        options: [
+                            "Date Limite de Conservation",
+                            "Date Limite de Consommation",
+                            "Durée Légale de Conservation",
+                            "Date de Livraison Confirmée"
+                        ],
+                        correct: 1,
+                        topic: "Dates limites"
+                    },
+                    {
+                        text: "En cas d'inspection, vous devez pouvoir fournir :",
+                        options: [
+                            "Uniquement les factures du mois en cours",
+                            "Tous les documents de traçabilité demandés",
+                            "Seulement les menus",
+                            "Rien du tout"
+                        ],
+                        correct: 1,
+                        topic: "Contrôles officiels"
+                    }
+                ]
+            },
+            {
+                id: 'conservation',
+                category: 'particulier',
+                title: 'Conservation des aliments',
+                description: 'Apprenez les bonnes pratiques de conservation pour préserver fraîcheur et sécurité.',
+                questionsCount: 10,
+                duration: 10,
+                badge: 'conservation',
+                questions: [
+                    {
+                        text: "Quelle est la température idéale d'un réfrigérateur ?",
+                        options: ["0°C à 2°C", "2°C à 4°C", "4°C à 6°C", "6°C à 8°C"],
+                        correct: 1,
+                        topic: "Température de conservation"
+                    },
+                    {
+                        text: "Quelle est la température idéale d'un congélateur ?",
+                        options: ["-10°C", "-15°C", "-18°C ou moins", "-25°C"],
+                        correct: 2,
+                        topic: "Température de conservation"
+                    },
+                    {
+                        text: "Où placer la viande crue dans le réfrigérateur ?",
+                        options: [
+                            "En haut",
+                            "Au milieu",
+                            "En bas, zone la plus froide",
+                            "Dans la porte"
+                        ],
+                        correct: 2,
+                        topic: "Organisation du réfrigérateur"
+                    },
+                    {
+                        text: "Combien de temps peut-on conserver un plat cuisiné au réfrigérateur ?",
+                        options: [
+                            "1 jour maximum",
+                            "2-3 jours maximum",
+                            "1 semaine",
+                            "2 semaines"
+                        ],
+                        correct: 1,
+                        topic: "Durées de conservation"
+                    },
+                    {
+                        text: "Un produit décongelé peut être recongelé :",
+                        options: [
+                            "Sans problème",
+                            "Uniquement s'il a été cuit entre temps",
+                            "Après 24h au réfrigérateur",
+                            "Jamais"
+                        ],
+                        correct: 1,
+                        topic: "Congélation"
+                    },
+                    {
+                        text: "Comment décongeler de la viande en toute sécurité ?",
+                        options: [
+                            "À température ambiante",
+                            "Au réfrigérateur ou au micro-ondes",
+                            "Dans l'eau chaude",
+                            "Au soleil"
+                        ],
+                        correct: 1,
+                        topic: "Décongélation"
+                    },
+                    {
+                        text: "Les œufs doivent être conservés :",
+                        options: [
+                            "À température ambiante",
+                            "Au réfrigérateur",
+                            "Au congélateur",
+                            "Dans l'eau"
+                        ],
+                        correct: 1,
+                        topic: "Conservation spécifique"
+                    },
+                    {
+                        text: "Une boîte de conserve entamée doit être :",
+                        options: [
+                            "Laissée dans sa boîte",
+                            "Transférée dans un récipient adapté",
+                            "Congelée immédiatement",
+                            "Consommée dans l'heure"
+                        ],
+                        correct: 1,
+                        topic: "Conservation après ouverture"
+                    },
+                    {
+                        text: "Les fruits et légumes se conservent mieux :",
+                        options: [
+                            "Tous au réfrigérateur",
+                            "Tous à température ambiante",
+                            "Selon le type de fruit/légume",
+                            "Dans des sacs plastiques fermés"
+                        ],
+                        correct: 2,
+                        topic: "Conservation fruits et légumes"
+                    },
+                    {
+                        text: "Un produit dont la DLC est dépassée :",
+                        options: [
+                            "Peut être consommé sans risque",
+                            "Ne doit pas être consommé",
+                            "Peut être consommé s'il sent bon",
+                            "Peut être cuit à haute température"
+                        ],
+                        correct: 1,
+                        topic: "Dates limites"
+                    }
+                ]
+            },
+            {
+                id: 'cuisson',
+                category: 'particulier',
+                title: 'Températures de cuisson',
+                description: 'Maîtrisez les températures de cuisson pour éliminer les risques sanitaires.',
+                questionsCount: 10,
+                duration: 10,
+                badge: 'cuisson',
+                questions: [
+                    {
+                        text: "À quelle température à cœur doit-on cuire du poulet ?",
+                        options: ["55°C", "65°C", "75°C minimum", "85°C"],
+                        correct: 2,
+                        topic: "Cuisson volaille"
+                    },
+                    {
+                        text: "À quelle température peut-on servir un steak saignant en toute sécurité ?",
+                        options: [
+                            "40°C à cœur",
+                            "50°C à cœur",
+                            "Saisie à haute température en surface",
+                            "Pas de règle particulière"
+                        ],
+                        correct: 2,
+                        topic: "Cuisson viande rouge"
+                    },
+                    {
+                        text: "Le porc doit être cuit à une température à cœur de :",
+                        options: ["55°C", "63°C minimum", "70°C minimum", "80°C"],
+                        correct: 2,
+                        topic: "Cuisson porc"
+                    },
+                    {
+                        text: "Pourquoi est-il important de bien cuire les œufs pour les personnes fragiles ?",
+                        options: [
+                            "Pour le goût",
+                            "Pour éviter la salmonelle",
+                            "Pour la texture",
+                            "C'est une tradition"
+                        ],
+                        correct: 1,
+                        topic: "Cuisson œufs"
+                    },
+                    {
+                        text: "À quelle température doit-on réchauffer un plat cuisiné ?",
+                        options: [
+                            "40°C",
+                            "55°C",
+                            "63°C minimum à cœur",
+                            "Température ambiante suffit"
+                        ],
+                        correct: 2,
+                        topic: "Réchauffage"
+                    },
+                    {
+                        text: "Pourquoi ne faut-il pas réchauffer plusieurs fois un plat ?",
+                        options: [
+                            "Perte de goût uniquement",
+                            "Multiplication bactérienne à chaque refroidissement",
+                            "Économie d'énergie",
+                            "C'est une légende"
+                        ],
+                        correct: 1,
+                        topic: "Réchauffage multiple"
+                    },
+                    {
+                        text: "Les fruits de mer doivent être cuits :",
+                        options: [
+                            "Légèrement",
+                            "Jusqu'à ce qu'ils soient opaques et fermes",
+                            "Peuvent être crus",
+                            "Seulement en surface"
+                        ],
+                        correct: 1,
+                        topic: "Cuisson fruits de mer"
+                    },
+                    {
+                        text: "Un thermomètre de cuisine doit être :",
+                        options: [
+                            "Utilisé occasionnellement",
+                            "Nettoyé et désinfecté entre chaque usage",
+                            "Partagé pour tous les aliments",
+                            "Jamais lavé"
+                        ],
+                        correct: 1,
+                        topic: "Utilisation thermomètre"
+                    },
+                    {
+                        text: "La viande hachée doit être cuite :",
+                        options: [
+                            "Saignante possible",
+                            "À point minimum",
+                            "Bien cuite (71°C à cœur minimum)",
+                            "Pas de règle"
+                        ],
+                        correct: 2,
+                        topic: "Cuisson viande hachée"
+                    },
+                    {
+                        text: "Pour les femmes enceintes, il est recommandé de :",
+                        options: [
+                            "Manger tout type de viande",
+                            "Éviter les viandes et poissons crus ou peu cuits",
+                            "Privilégier le carpaccio",
+                            "Manger saignant"
+                        ],
+                        correct: 1,
+                        topic: "Populations fragiles"
+                    }
+                ]
+            },
+            {
+                id: 'etiquetage',
+                category: 'particulier',
+                title: 'Lecture d\'étiquettes',
+                description: 'Décryptez les informations nutritionnelles et réglementaires des emballages.',
+                questionsCount: 10,
+                duration: 10,
+                badge: 'etiquetage',
+                questions: [
+                    {
+                        text: "Que signifie 'DLC' sur un emballage ?",
+                        options: [
+                            "Date Limite de Congélation",
+                            "Date Limite de Consommation",
+                            "Durée Légale de Conservation",
+                            "Date de Livraison Confirmée"
+                        ],
+                        correct: 1,
+                        topic: "Dates limites"
+                    },
+                    {
+                        text: "Que signifie 'DDM' (anciennement DLUO) ?",
+                        options: [
+                            "Date de Dernière Modification",
+                            "Date de Durabilité Minimale",
+                            "Délai de Mise en vente",
+                            "Date de Distribution Maximale"
+                        ],
+                        correct: 1,
+                        topic: "Dates limites"
+                    },
+                    {
+                        text: "Un produit dont la DDM est dépassée :",
+                        options: [
+                            "Doit être jeté immédiatement",
+                            "Peut être consommé si aspect/odeur corrects",
+                            "Est dangereux",
+                            "Doit être recuit"
+                        ],
+                        correct: 1,
+                        topic: "DDM"
+                    },
+                    {
+                        text: "Les ingrédients sur une étiquette sont listés :",
+                        options: [
+                            "Par ordre alphabétique",
+                            "Par ordre décroissant de quantité",
+                            "De manière aléatoire",
+                            "Du moins au plus important"
+                        ],
+                        correct: 1,
+                        topic: "Liste d'ingrédients"
+                    },
+                    {
+                        text: "Les allergènes dans la liste d'ingrédients doivent être :",
+                        options: [
+                            "Écrits en petit",
+                            "Mis en évidence (gras, couleur, etc.)",
+                            "Cachés",
+                            "Écrits en latin"
+                        ],
+                        correct: 1,
+                        topic: "Allergènes"
+                    },
+                    {
+                        text: "Le Nutri-Score classe les produits de :",
+                        options: [
+                            "A (moins bon) à E (meilleur)",
+                            "A (meilleur) à E (moins bon)",
+                            "1 (meilleur) à 5 (moins bon)",
+                            "★ à ★★★★★"
+                        ],
+                        correct: 1,
+                        topic: "Nutri-Score"
+                    },
+                    {
+                        text: "Les valeurs nutritionnelles sont exprimées pour :",
+                        options: [
+                            "1 gramme",
+                            "100g ou 100ml",
+                            "1 kilogramme",
+                            "La portion"
+                        ],
+                        correct: 1,
+                        topic: "Informations nutritionnelles"
+                    },
+                    {
+                        text: "Le logo 'AB' certifie :",
+                        options: [
+                            "Un produit allégé",
+                            "Un produit Agriculture Biologique",
+                            "Un produit sans allergènes",
+                            "Un produit artisanal"
+                        ],
+                        correct: 1,
+                        topic: "Labels"
+                    },
+                    {
+                        text: "La mention 'Sans sucres ajoutés' signifie :",
+                        options: [
+                            "Le produit ne contient aucun sucre",
+                            "Pas de sucres ajoutés mais peut contenir des sucres naturels",
+                            "Produit sans calories",
+                            "Produit pour diabétiques"
+                        ],
+                        correct: 1,
+                        topic: "Allégations"
+                    },
+                    {
+                        text: "Un numéro LOT sur l'emballage permet de :",
+                        options: [
+                            "Connaître le prix",
+                            "Identifier la production en cas de rappel",
+                            "Savoir le nombre de calories",
+                            "Déterminer la recette"
+                        ],
+                        correct: 1,
+                        topic: "Traçabilité"
+                    }
+                ]
+            },
+            {
+                id: 'dechets',
+                category: 'particulier',
+                title: 'Lutte contre le gaspillage',
+                description: 'Adoptez les bons gestes pour réduire le gaspillage alimentaire à la maison.',
+                questionsCount: 10,
+                duration: 10,
+                badge: 'dechets',
+                questions: [
+                    {
+                        text: "En France, combien de kg de nourriture sont gaspillés par personne et par an ?",
+                        options: [
+                            "10 kg",
+                            "20-30 kg",
+                            "50-70 kg",
+                            "100 kg"
+                        ],
+                        correct: 1,
+                        topic: "Chiffres du gaspillage"
+                    },
+                    {
+                        text: "Quelle est la meilleure façon d'organiser son réfrigérateur ?",
+                        options: [
+                            "Au hasard",
+                            "FIFO : First In First Out (premier entré, premier sorti)",
+                            "Les produits chers devant",
+                            "Par couleur"
+                        ],
+                        correct: 1,
+                        topic: "Organisation"
+                    },
+                    {
+                        text: "Que faire des épluchures de légumes ?",
+                        options: [
+                            "Toujours les jeter",
+                            "Les composter ou faire des bouillons",
+                            "Les brûler",
+                            "Les donner aux animaux uniquement"
+                        ],
+                        correct: 1,
+                        topic: "Valorisation des déchets"
+                    },
+                    {
+                        text: "Un yaourt dont la DDM est dépassée de quelques jours :",
+                        options: [
+                            "Doit être jeté immédiatement",
+                            "Peut être consommé si aspect/odeur normaux",
+                            "Est toxique",
+                            "Doit être cuit"
+                        ],
+                        correct: 1,
+                        topic: "DDM et consommation"
+                    },
+                    {
+                        text: "Pour limiter le gaspillage, il est recommandé de :",
+                        options: [
+                            "Acheter en grande quantité",
+                            "Planifier ses menus et faire une liste de courses",
+                            "Acheter uniquement des produits frais",
+                            "Faire ses courses tous les jours"
+                        ],
+                        correct: 1,
+                        topic: "Prévention"
+                    },
+                    {
+                        text: "Les restes de repas peuvent être :",
+                        options: [
+                            "Jetés systématiquement",
+                            "Conservés 2-3 jours au frais et réutilisés",
+                            "Laissés à température ambiante",
+                            "Donnés aux animaux uniquement"
+                        ],
+                        correct: 1,
+                        topic: "Gestion des restes"
+                    },
+                    {
+                        text: "Le batch cooking (cuisine en lot) permet de :",
+                        options: [
+                            "Gaspiller plus",
+                            "Optimiser le temps et réduire le gaspillage",
+                            "Cuisiner n'importe comment",
+                            "Acheter plus"
+                        ],
+                        correct: 1,
+                        topic: "Techniques anti-gaspi"
+                    },
+                    {
+                        text: "Un pain rassis peut être :",
+                        options: [
+                            "Seulement jeté",
+                            "Transformé en chapelure, pain perdu, croûtons",
+                            "Donné uniquement aux oiseaux",
+                            "Revendu"
+                        ],
+                        correct: 1,
+                        topic: "Valorisation"
+                    },
+                    {
+                        text: "Pour réduire le gaspillage au restaurant, on peut :",
+                        options: [
+                            "Commander sans réfléchir",
+                            "Demander un doggy bag pour les restes",
+                            "Toujours tout laisser dans l'assiette",
+                            "Commander le maximum"
+                        ],
+                        correct: 1,
+                        topic: "Gaspillage hors domicile"
+                    },
+                    {
+                        text: "Les applications anti-gaspi permettent de :",
+                        options: [
+                            "Acheter plus cher",
+                            "Récupérer des invendus à prix réduit",
+                            "Gaspiller davantage",
+                            "Commander à distance"
+                        ],
+                        correct: 1,
+                        topic: "Solutions digitales"
+                    }
+                ]
+            }
+        ];
+
+        const articles = [
+            {
+                id: 1,
+                title: "Comprendre les 7 principes du système HACCP",
+                excerpt: "Le système HACCP est la pierre angulaire de la sécurité alimentaire en milieu professionnel. Découvrez comment mettre en place chaque principe pour garantir la sécurité de vos productions.",
+                tag: "HACCP",
+                topics: ["Introduction HACCP", "Principes HACCP", "Mise en œuvre HACCP"],
+                readTime: "8 min"
+            },
+            {
+                id: 2,
+                title: "Les températures critiques en cuisine professionnelle",
+                excerpt: "La maîtrise de la chaîne du froid et du chaud est essentielle. Apprenez les températures à respecter à chaque étape de la préparation pour éviter la multiplication bactérienne.",
+                tag: "Températures",
+                topics: ["Températures critiques", "Zone de danger"],
+                readTime: "6 min"
+            },
+            {
+                id: 3,
+                title: "Hygiène des mains : le geste qui sauve",
+                excerpt: "Le lavage des mains est le premier rempart contre les contaminations. Découvrez la technique complète et les moments clés où ce geste est indispensable.",
+                tag: "Hygiène",
+                topics: ["Hygiène personnelle"],
+                readTime: "5 min"
+            },
+            {
+                id: 4,
+                title: "Allergènes : prévenir les contaminations croisées",
+                excerpt: "Les allergies alimentaires peuvent être mortelles. Apprenez à organiser votre cuisine pour éviter tout contact entre allergènes et autres aliments.",
+                tag: "Allergènes",
+                topics: ["Contamination croisée", "Prévention contamination"],
+                readTime: "7 min"
+            },
+            {
+                id: 5,
+                title: "Traçabilité : vos obligations légales",
+                excerpt: "La réglementation impose une traçabilité complète de vos produits. Découvrez quels documents conserver et comment organiser votre système de traçabilité.",
+                tag: "Traçabilité",
+                topics: ["Documentation", "Conservation documents", "Contrôles officiels"],
+                readTime: "10 min"
+            },
+            {
+                id: 6,
+                title: "Bien organiser son réfrigérateur à la maison",
+                excerpt: "Chaque zone du réfrigérateur a sa température. Apprenez où placer chaque type d'aliment pour une conservation optimale et sécuritaire.",
+                tag: "Conservation",
+                topics: ["Organisation du réfrigérateur", "Température de conservation"],
+                readTime: "5 min"
+            },
+            {
+                id: 7,
+                title: "Congélation et décongélation : les règles d'or",
+                excerpt: "Mal décongeler un aliment peut être dangereux. Découvrez les méthodes sûres et pourquoi il ne faut jamais recongeler un produit décongelé.",
+                tag: "Conservation",
+                topics: ["Congélation", "Décongélation"],
+                readTime: "6 min"
+            },
+            {
+                id: 8,
+                title: "Cuisson de la viande : éviter les risques",
+                excerpt: "Certaines viandes nécessitent une cuisson complète pour éliminer les bactéries. Connaissez les températures minimales pour chaque type de viande.",
+                tag: "Cuisson",
+                topics: ["Cuisson volaille", "Cuisson viande rouge", "Cuisson porc", "Cuisson viande hachée"],
+                readTime: "7 min"
+            },
+            {
+                id: 9,
+                title: "Déchiffrer les étiquettes alimentaires",
+                excerpt: "DLC, DDM, Nutri-Score... apprenez à lire correctement les informations sur les emballages pour faire les bons choix et éviter le gaspillage.",
+                tag: "Étiquetage",
+                topics: ["Dates limites", "DDM", "Liste d'ingrédients", "Informations nutritionnelles"],
+                readTime: "8 min"
+            },
+            {
+                id: 10,
+                title: "10 astuces anti-gaspillage au quotidien",
+                excerpt: "Réduire le gaspillage alimentaire, c'est possible ! Découvrez des techniques simples pour valoriser vos restes et organiser vos courses intelligemment.",
+                tag: "Anti-gaspi",
+                topics: ["Organisation", "Prévention", "Gestion des restes", "Valorisation"],
+                readTime: "6 min"
+            }
+        ];
+
+        // Current quiz state
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        // Initialize the app
+        function initApp() {
+            // Load user data from localStorage or initialize
+            const saved = localStorage.getItem('foodSafetyUserData');
+            if (saved) {
+                Object.assign(userData, JSON.parse(saved));
+            }
+
+            ensureSampleAccounts();
+
+            renderDashboard();
+            renderBadges();
+            updateStats();
+            // Show the landing/home view first
+            showView('home');
+        }
+
+        // Render dashboard
+        function renderDashboard() {
+            // Render Pro Quizzes
+            const proQuizGrid = document.getElementById('proQuizGrid');
+            proQuizGrid.innerHTML = quizzes
+                .filter(q => q.category === 'pro')
+                .map(quiz => createQuizCard(quiz))
+                .join('');
+
+            // Render Particulier Quizzes
+            const particulierQuizGrid = document.getElementById('particulierQuizGrid');
+            particulierQuizGrid.innerHTML = quizzes
+                .filter(q => q.category === 'particulier')
+                .map(quiz => createQuizCard(quiz))
+                .join('');
+
+            // Render Articles
+            renderArticles();
+        }
+
+        function createQuizCard(quiz) {
+            const quizData = userData.quizzes[quiz.id] || { completed: false, score: 0, attempts: 0 };
+            const status = quizData.completed ? 'completed' : 
+                          quizData.attempts > 0 ? 'in-progress' : 'not-started';
+            const statusText = quizData.completed ? '✓ Complété' : 
+                              quizData.attempts > 0 ? 'En cours' : 'Non commencé';
+
+            return `
+                <div class="quiz-card" onclick="startQuiz('${quiz.id}')" role="button" tabindex="0" onkeypress="(event.key==='Enter'||event.key===' ') && startQuiz('${quiz.id}')">
+                    <div class="quiz-header">
+                        <span class="quiz-category ${quiz.category}">${quiz.category === 'pro' ? 'Professionnel' : 'Particulier'}</span>
+                        <span class="quiz-status ${status}">${statusText}</span>
+                    </div>
+                    <h3 class="quiz-title">${quiz.title}</h3>
+                    <p class="quiz-description">${quiz.description}</p>
+                    <div class="quiz-meta">
+                        <span>📝 ${quiz.questions.length} questions</span>
+                        <span>⏱️ ${quiz.duration} min</span>
+                    </div>
+                    ${quizData.score > 0 ? `
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" style="width: ${quizData.score}%"></div>
+                        </div>
+                        <div class="quiz-score">Meilleur score : ${quizData.score}%</div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function renderBadges() {
+            const badgesGrid = document.getElementById('badgesGrid');
+            badgesGrid.innerHTML = badges.map(badge => {
+                const earned = userData.badges.includes(badge.id);
+                return `
+                    <div class="badge ${earned ? 'earned' : 'locked'}">
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div class="badge-name">${badge.name}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStats() {
+            const completed = Object.values(userData.quizzes).filter(q => q.completed).length;
+            const totalQuizzes = quizzes.length;
+            const scores = Object.values(userData.quizzes).map(q => q.score).filter(s => s > 0);
+            const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+            const badgesCount = userData.badges.length;
+            const progress = Math.round((completed / totalQuizzes) * 100);
+
+            document.getElementById('completedQuizzes').textContent = `${completed}/${totalQuizzes}`;
+            document.getElementById('averageScore').textContent = `${avgScore}%`;
+            document.getElementById('badgesEarned').textContent = `${badgesCount}/${badges.length}`;
+            document.getElementById('globalProgress').textContent = `${progress}%`;
+            document.getElementById('globalProgressBar').style.width = `${progress}%`;
+        }
+
+        function startQuiz(quizId) {
+            currentQuiz = quizzes.find(q => q.id === quizId);
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            showView('quiz');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1}/${currentQuiz.questions.length}`;
+            document.getElementById('questionText').textContent = question.text;
+
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = question.options.map((option, index) => `
+                <div class="quiz-option" onclick="selectOption(${index})">
+                    ${option}
+                </div>
+            `).join('');
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').style.visibility = currentQuestionIndex > 0 ? 'visible' : 'hidden';
+            document.getElementById('nextBtn').textContent = 
+                currentQuestionIndex === currentQuiz.questions.length - 1 ? 'Terminer' : 'Suivant';
+        }
+
+        function selectOption(optionIndex) {
+            // Clear previous selection
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Mark selected
+            document.querySelectorAll('.quiz-option')[optionIndex].classList.add('selected');
+            userAnswers[currentQuestionIndex] = optionIndex;
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert('Veuillez sélectionner une réponse');
+                return;
+            }
+
+            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            // Calculate score
+            let correctAnswers = 0;
+            const weakTopics = new Set();
+
+            currentQuiz.questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    correctAnswers++;
+                } else {
+                    weakTopics.add(question.topic);
+                }
+            });
+
+            const score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+
+            // Update user data
+            if (!userData.quizzes[currentQuiz.id]) {
+                userData.quizzes[currentQuiz.id] = { completed: false, score: 0, attempts: 0 };
+            }
+
+            userData.quizzes[currentQuiz.id].attempts++;
+            userData.quizzes[currentQuiz.id].score = Math.max(userData.quizzes[currentQuiz.id].score, score);
+
+            // Check if badge earned
+            let badgeEarned = false;
+            if (score >= 80 && !userData.badges.includes(currentQuiz.badge)) {
+                userData.badges.push(currentQuiz.badge);
+                userData.quizzes[currentQuiz.id].completed = true;
+                badgeEarned = true;
+            } else if (score >= 80) {
+                userData.quizzes[currentQuiz.id].completed = true;
+            }
+
+            // Save data
+            localStorage.setItem('foodSafetyUserData', JSON.stringify(userData));
+
+            // Show results
+            showResults(score, badgeEarned, Array.from(weakTopics));
+        }
+
+        function showResults(score, badgeEarned, weakTopics) {
+            showView('results');
+
+            document.getElementById('finalScore').textContent = `${score}%`;
+
+            let message = '';
+            if (score >= 80) {
+                message = '🎉 Excellent travail !';
+            } else if (score >= 60) {
+                message = '👍 Bon résultat, continuez !';
+            } else {
+                message = '📚 Continuez à apprendre !';
+            }
+            document.getElementById('resultsMessage').textContent = message;
+
+            // Show badge if earned
+            const badgeContainer = document.getElementById('badgeEarnedContainer');
+            if (badgeEarned) {
+                const badge = badges.find(b => b.id === currentQuiz.badge);
+                badgeContainer.innerHTML = `
+                    <div class="results-badge-earned">
+                        <div class="results-badge-icon">${badge.icon}</div>
+                        <div>
+                            <strong>Badge débloqué !</strong><br>
+                            ${badge.name}
+                        </div>
+                    </div>
+                `;
+            } else {
+                badgeContainer.innerHTML = '';
+            }
+
+            // Show recommended articles
+            if (weakTopics.length > 0) {
+                const recommendedArticles = articles.filter(article => 
+                    article.topics.some(topic => weakTopics.includes(topic))
+                ).slice(0, 3);
+
+                if (recommendedArticles.length > 0) {
+                    document.getElementById('recommendedArticles').innerHTML = `
+                        <h3>📖 Articles recommandés pour vous</h3>
+                        <p style="color: var(--text-medium); margin-bottom: 1rem;">
+                            Basés sur vos résultats, nous vous recommandons ces articles :
+                        </p>
+                        ${recommendedArticles.map(article => `
+                            <div class="article-card" style="margin-bottom: 1rem;">
+                                <span class="article-tag">${article.tag}</span>
+                                <h4 class="article-title" style="font-size: 1.1rem;">${article.title}</h4>
+                                <p class="article-excerpt" style="font-size: 0.9rem;">${article.excerpt}</p>
+                                <div class="article-meta">
+                                    <span>📖 ${article.readTime}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                } else {
+                    document.getElementById('recommendedArticles').innerHTML = '';
+                }
+            } else {
+                document.getElementById('recommendedArticles').innerHTML = `
+                    <p style="color: var(--success); font-weight: 600;">
+                        ✨ Parfait ! Vous avez répondu correctement à toutes les questions.
+                    </p>
+                `;
+            }
+
+            updateStats();
+            renderBadges();
+        }
+
+        function renderArticles() {
+            const articlesGrid = document.getElementById('articlesGrid');
+            
+            // Get user's weak topics
+            const weakTopics = new Set();
+            Object.entries(userData.quizzes).forEach(([quizId, quizData]) => {
+                const quiz = quizzes.find(q => q.id === quizId);
+                if (quiz && quizData.score < 80 && quizData.score > 0) {
+                    // This is a simplified version - in a real app, you'd track which questions were wrong
+                    quiz.questions.forEach(q => weakTopics.add(q.topic));
+                }
+            });
+
+            // Prioritize articles related to weak topics
+            const sortedArticles = [...articles].sort((a, b) => {
+                const aRelevant = a.topics.some(topic => weakTopics.has(topic));
+                const bRelevant = b.topics.some(topic => weakTopics.has(topic));
+                if (aRelevant && !bRelevant) return -1;
+                if (!aRelevant && bRelevant) return 1;
+                return 0;
+            });
+
+            articlesGrid.innerHTML = sortedArticles.map(article => `
+                <div class="article-card">
+                    <span class="article-tag">${article.tag}</span>
+                    <h3 class="article-title">${article.title}</h3>
+                    <p class="article-excerpt">${article.excerpt}</p>
+                    <div class="article-meta">
+                        <span>📖 ${article.readTime}</span>
+                        ${article.topics.some(topic => weakTopics.has(topic)) ? 
+                            '<span style="color: var(--secondary); font-weight: 600;">⭐ Recommandé pour vous</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Admin functions
+        function getAccounts() {
+            return JSON.parse(localStorage.getItem(ACCOUNTS_KEY) || '[]');
+        }
+
+        function saveAccounts(list) {
+            localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(list));
+        }
+
+        function renderAdminPanel() {
+            const list = getAccounts();
+            document.getElementById('accountCount').textContent = list.length;
+            const container = document.getElementById('accountsList');
+            if (list.length === 0) {
+                container.innerHTML = '<p class="small">Aucun compte trouvé.</p>';
+                return;
+            }
+            container.innerHTML = list.map(acc => `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+                    <div>
+                        <div style="font-weight:700">${acc.name} <span class="small">(@${acc.username})</span></div>
+                        <div class="small">${acc.email} • rôle: ${acc.role}</div>
+                    </div>
+                    <div style="display:flex;gap:0.5rem;">
+                        <button class="btn btn-secondary" onclick="editAccount('${acc.username}')">Éditer</button>
+                        <button class="btn btn-primary" onclick="deleteAccount('${acc.username}')">Supprimer</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addAccount() {
+            const username = document.getElementById('newUsername').value.trim();
+            const name = document.getElementById('newName').value.trim();
+            const email = document.getElementById('newEmail').value.trim();
+            const role = document.getElementById('newRole').value;
+            const password = document.getElementById('newPassword').value;
+            if (!username || !name || !email || !password) { alert('Veuillez remplir tous les champs'); return; }
+            const list = getAccounts();
+            if (list.find(a => a.username === username)) { alert('Ce nom d\'utilisateur existe déjà'); return; }
+            list.push({ username, name, email, role, password });
+            saveAccounts(list);
+            document.getElementById('newUsername').value='';
+            document.getElementById('newName').value='';
+            document.getElementById('newEmail').value='';
+            document.getElementById('newPassword').value='';
+            renderAdminPanel();
+        }
+
+        function deleteAccount(username) {
+            if (!confirm('Supprimer le compte ' + username + ' ?')) return;
+            let list = getAccounts();
+            list = list.filter(a => a.username !== username);
+            saveAccounts(list);
+            renderAdminPanel();
+        }
+
+        function editAccount(username) {
+            alert('Édition simple non implémentée dans la démo. Vous pouvez supprimer puis recréer le compte.');
+        }
+        // Open login (either redirect or modal)
+        function openLogin() {
+            if (loginMode === 'redirect') {
+                window.location.href = loginUrl;
+                return;
+            }
+            // show modal
+            document.getElementById('loginBackdrop').style.display = 'flex';
+            document.getElementById('loginUsername').focus();
+        }
+
+        function closeLogin() {
+            document.getElementById('loginBackdrop').style.display = 'none';
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (!username || !password) { alert('Entrez nom d\'utilisateur et mot de passe'); return; }
+
+            const accounts = JSON.parse(localStorage.getItem(ACCOUNTS_KEY) || '[]');
+            const account = accounts.find(a => a.username === username && a.password === password);
+            if (!account) { alert('Identifiants invalides'); return; }
+
+            // set user context
+            userData.name = account.name;
+            userData.currentUser = account.username;
+            userData.isAdmin = account.role === 'admin';
+            localStorage.setItem('foodSafetyUserData', JSON.stringify(userData));
+            closeLogin();
+            updateHeaderUser();
+            if (userData.isAdmin) {
+                showView('admin');
+                renderAdminPanel();
+            } else {
+                showView('dashboard');
+            }
+        }
+
+        function logout() {
+            userData.name = 'Jean Dupont';
+            userData.currentUser = null;
+            userData.isAdmin = false;
+            localStorage.setItem('foodSafetyUserData', JSON.stringify(userData));
+            updateHeaderUser();
+            showView('home');
+        }
+
+        function updateHeaderUser() {
+            const nameEl = document.getElementById('userName');
+            if (userData && userData.currentUser) {
+                nameEl.textContent = userData.name || userData.currentUser;
+            } else {
+                nameEl.textContent = 'Invité';
+            }
+        }
+
+        function switchTab(tabName, evt) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Use currentTarget when available for reliable element reference
+            const tabButton = (evt && evt.currentTarget) ? evt.currentTarget : evt && evt.target ? evt.target : null;
+            if (tabButton) tabButton.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            if (tabName === 'pro') {
+                document.getElementById('proContent').classList.add('active');
+            } else if (tabName === 'particulier') {
+                document.getElementById('particulierContent').classList.add('active');
+            } else if (tabName === 'articles') {
+                document.getElementById('articlesContent').classList.add('active');
+                renderArticles(); // Refresh articles with current recommendations
+            }
+        }
+
+        function showView(viewName) {
+            const views = ['home','dashboard','admin', 'quiz', 'results'];
+            views.forEach(view => {
+                const element = document.getElementById(`${view}View`);
+                if (element) {
+                    element.style.display = view === viewName ? 'block' : 'none';
+                }
+            });
+
+            if (viewName === 'dashboard') {
+                renderDashboard();
+                renderBadges();
+                updateStats();
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
