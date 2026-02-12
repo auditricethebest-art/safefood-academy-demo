@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemple - Questions Interactives</title>
+    <style>
+        :root {
+            --primary: #2d5016;
+            --primary-light: #4a7c2a;
+            --accent: #f7b731;
+            --border: #e2e8f0;
+            --text-dark: #1a1a1a;
+            --text-medium: #4a5568;
+        }
+        body { font-family: Arial, sans-serif; padding: 2rem; max-width: 900px; margin: 0 auto; }
+        h2 { color: var(--primary); margin-top: 2rem; }
+        .demo-section { background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .btn { padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; }
+
+        /* Styles pour questions interactives */
+        .matching-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .matching-column { display: flex; flex-direction: column; gap: 0.5rem; }
+        .matching-item { padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; background: white; transition: all 0.3s; }
+        .matching-item.selected { border-color: var(--primary); background: rgba(77, 124, 42, 0.1); }
+        .matching-item.connected { background: rgba(77, 124, 42, 0.05); border-color: var(--primary-light); }
+
+        .ranking-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+        .ranking-item { padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; background: white; display: flex; align-items: center; gap: 0.5rem; cursor: move; user-select: none; }
+        .ranking-item.dragging { opacity: 0.5; }
+        .ranking-item-drag-handle { color: var(--primary); font-weight: bold; cursor: grab; }
+        .ranking-item-number { display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; background: var(--primary); color: white; border-radius: 50%; font-size: 0.8rem; font-weight: 700; }
+
+        .category-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .category-box { border: 2px dashed var(--border); border-radius: 8px; padding: 0.75rem; min-height: 120px; background: rgba(77, 124, 42, 0.02); }
+        .category-box-title { font-weight: 700; margin-bottom: 0.5rem; color: var(--primary); }
+        .draggable-item { padding: 0.5rem 0.75rem; background: var(--accent); color: white; border-radius: 6px; margin: 0.25rem 0; cursor: grab; user-select: none; }
+        .draggable-item.dragging { opacity: 0.5; }
+        .category-box.drag-over { background: rgba(77, 124, 42, 0.1); border-color: var(--primary); }
+    </style>
+</head>
+<body>
+    <h1>Exemples de Questions Interactives</h1>
+
+    <h2>1. Question à Relier (Matching)</h2>
+    <div class="demo-section">
+        <p><strong>Associez les termes à leurs définitions :</strong></p>
+        <div id="matchingDemo"></div>
+        <button class="btn" onclick="checkMatching()">Vérifier les réponses</button>
+        <p id="matchingResult"></p>
+    </div>
+
+    <h2>2. Question à Hiérarchiser (Ranking)</h2>
+    <div class="demo-section">
+        <p><strong>Ordonnez les étapes de refroidissement correct :</strong></p>
+        <div id="rankingDemo"></div>
+        <button class="btn" onclick="checkRanking()">Vérifier l'ordre</button>
+        <p id="rankingResult"></p>
+    </div>
+
+    <h2>3. Question de Catégorisation (Drag-Drop)</h2>
+    <div class="demo-section">
+        <p><strong>Classez les dangers par type :</strong></p>
+        <div id="dragdropDemo"></div>
+        <button class="btn" onclick="checkDragDrop()">Vérifier la classification</button>
+        <p id="dragdropResult"></p>
+    </div>
+
+    <script src="interactive-questions.js"></script>
+    <script>
+        // Initialiser les démos
+
+        // 1. Matching
+        const matchingPairs = [
+            { question: 'HACCP', answer: 'Hazard Analysis Critical Control Point' },
+            { question: 'DLC', answer: 'Date Limite de Consommation' },
+            { question: 'FIFO', answer: 'First In First Out' }
+        ];
+        initMatchingQuestion('matchingDemo', matchingPairs);
+
+        function checkMatching() {
+            const answers = getMatchingAnswers();
+            const correct = { 0: 0, 1: 1, 2: 2 };
+            const isCorrect = JSON.stringify(answers) === JSON.stringify(correct);
+            document.getElementById('matchingResult').textContent = isCorrect ? '✅ Correct !' : '❌ Incorrect. Les bonnes paires sont : HACCP↔HACCP, DLC↔DLC, FIFO↔FIFO';
+        }
+
+        // 2. Ranking
+        const rankingItems = [
+            'Refroidir de 70°C à 10°C en moins de 2h',
+            'Placer au réfrigérateur',
+            'Laisser refroidir à température ambiante'
+        ];
+        initRankingQuestion('rankingDemo', rankingItems);
+
+        function checkRanking() {
+            const answers = getRankingAnswers();
+            const correct = [0, 2, 1]; // Index corrects
+            const isCorrect = JSON.stringify(answers) === JSON.stringify(correct);
+            document.getElementById('rankingResult').textContent = isCorrect ? '✅ Correct !' : '❌ Incorrect. Bon ordre : Étape 1 → Étape 3 → Étape 2';
+        }
+
+        // 3. Drag-Drop
+        const categories = ['Biologique', 'Physique', 'Chimique'];
+        const items = [
+            'Bactéries pathogènes',
+            'Verre cassé',
+            'Pesticides',
+            'Listeria',
+            'Fragment métallique',
+            'Détergent'
+        ];
+        initDragDropQuestion('dragdropDemo', categories, items);
+
+        function checkDragDrop() {
+            const answers = getDragDropAnswers();
+            const correct = {
+                0: 'Biologique',   // Bactéries pathogènes
+                1: 'Physique',     // Verre cassé
+                2: 'Chimique',     // Pesticides
+                3: 'Biologique',   // Listeria
+                4: 'Physique',     // Fragment métallique
+                5: 'Chimique'      // Détergent
+            };
+            let score = 0;
+            for (let i = 0; i < 6; i++) {
+                if (answers[i] === correct[i]) score++;
+            }
+            document.getElementById('dragdropResult').textContent = `Score : ${score}/6 - ${score === 6 ? '✅ Parfait !' : '❌ À revoir'}`;
+        }
+    </script>
+</body>
+</html>
