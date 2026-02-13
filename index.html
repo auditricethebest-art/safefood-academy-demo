@@ -1165,26 +1165,36 @@
                         topic: "Températures critiques"
                     },
                     {
-                        text: "Quelle est la zone de danger pour la multiplication bactérienne ?",
-                        options: [
-                            "Entre -5°C et 5°C",
-                            "Entre 0°C et 10°C",
-                            "Entre 10°C et 63°C",
-                            "Entre 20°C et 80°C"
+                        type: 'ranking',
+                        text: "Classez les étapes HACCP dans le bon ordre :",
+                        items: [
+                            "Constituer l'équipe HACCP",
+                            "Identifier les dangers",
+                            "Déterminer les CCP",
+                            "Établir les limites critiques",
+                            "Établir les actions correctives"
                         ],
-                        correct: 2,
-                        topic: "Températures critiques"
+                        correct: [0, 1, 2, 3, 4],
+                        topic: "Mise en œuvre HACCP"
                     },
                     {
-                        text: "Que doit contenir un plan HACCP documenté ?",
-                        options: [
-                            "Uniquement les CCP identifiés",
-                            "Les procédures de nettoyage",
-                            "L'analyse des dangers, les CCP, les limites critiques et les procédures de surveillance",
-                            "Les recettes et les coûts"
-                        ],
-                        correct: 2,
-                        topic: "Documentation HACCP"
+                        type: 'matching',
+                        text: "Associez chaque principe HACCP à sa description :",
+                        pairs: {
+                            "Principe 1": "Identifier les dangers",
+                            "Principe 2": "Déterminer les CCP",
+                            "Principe 3": "Établir les limites critiques",
+                            "Principe 4": "Mettre en place la surveillance",
+                            "Principe 5": "Établir les actions correctives"
+                        },
+                        correct: {
+                            "Principe 1": "Identifier les dangers",
+                            "Principe 2": "Déterminer les CCP",
+                            "Principe 3": "Établir les limites critiques",
+                            "Principe 4": "Mettre en place la surveillance",
+                            "Principe 5": "Établir les actions correctives"
+                        },
+                        topic: "Principes HACCP"
                     },
                     {
                         text: "Quelle est la fréquence recommandée pour réviser un plan HACCP ?",
@@ -1287,15 +1297,27 @@
                         topic: "Nettoyage et désinfection"
                     },
                     {
-                        text: "Les planches à découper doivent être :",
-                        options: [
-                            "Nettoyées une fois par semaine",
-                            "Utilisées pour tous les aliments",
-                            "Codées par couleur selon les aliments",
-                            "Uniquement en bois"
+                        type: 'dragdrop',
+                        text: "Classez les étapes du nettoyage dans les bonnes catégories :",
+                        categories: {
+                            "Avant le nettoyage": [],
+                            "Pendant le nettoyage": [],
+                            "Après le nettoyage": []
+                        },
+                        items: [
+                            "Enlever les résidus visibles",
+                            "Appliquer le produit de nettoyage",
+                            "Rincer à l'eau chaude",
+                            "Déposer l'ustensile",
+                            "Frotter avec une brosse",
+                            "Ranger l'ustensile"
                         ],
-                        correct: 2,
-                        topic: "Marche en avant"
+                        correct: {
+                            "Avant le nettoyage": "Enlever les résidus visibles",
+                            "Pendant le nettoyage": "Appliquer le produit de nettoyage",
+                            "Après le nettoyage": "Rincer à l'eau chaude"
+                        },
+                        topic: "Nettoyage et désinfection"
                     },
                     {
                         text: "Que signifie la 'marche en avant' ?",
@@ -1376,15 +1398,23 @@
                         topic: "Contamination croisée"
                     },
                     {
-                        text: "Pour éviter la contamination croisée, il faut :",
-                        options: [
-                            "Utiliser les mêmes ustensiles pour tous les plats",
-                            "Nettoyer entre chaque préparation",
-                            "Stocker tous les allergènes ensemble",
-                            "Cuisiner plus vite"
-                        ],
-                        correct: 1,
-                        topic: "Prévention contamination"
+                        type: 'matching',
+                        text: "Associez chaque allergène à son groupe principal :",
+                        pairs: {
+                            "Arachides": "Fruits à coque",
+                            "Lait": "Produits d'origine animale",
+                            "Œufs": "Produits d'origine animale",
+                            "Soja": "Légumineuses",
+                            "Noix": "Fruits à coque"
+                        },
+                        correct: {
+                            "Arachides": "Fruits à coque",
+                            "Lait": "Produits d'origine animale",
+                            "Œufs": "Produits d'origine animale",
+                            "Soja": "Légumineuses",
+                            "Noix": "Fruits à coque"
+                        },
+                        topic: "Allergènes"
                     },
                     {
                         text: "Les traces d'allergènes sur un produit :",
@@ -1508,15 +1538,17 @@
                         topic: "Numérotation des lots"
                     },
                     {
-                        text: "La traçabilité ascendante concerne :",
-                        options: [
-                            "Les produits vendus aux clients",
-                            "Les produits reçus des fournisseurs",
-                            "Les produits en stock",
-                            "Les déchets"
+                        type: 'ranking',
+                        text: "Ordonnez les étapes de la traçabilité en restauration :",
+                        items: [
+                            "Recevoir le produit du fournisseur",
+                            "Enregistrer l'arrivée et le lot",
+                            "Entreposer le produit",
+                            "Préparer le plat",
+                            "Servir le plat au client"
                         ],
-                        correct: 1,
-                        topic: "Types de traçabilité"
+                        correct: [0, 1, 2, 3, 4],
+                        topic: "Processus traçabilité"
                     },
                     {
                         text: "La traçabilité descendante concerne :",
@@ -1652,15 +1684,27 @@
                         topic: "Conservation après ouverture"
                     },
                     {
-                        text: "Les fruits et légumes se conservent mieux :",
-                        options: [
-                            "Tous au réfrigérateur",
-                            "Tous à température ambiante",
-                            "Selon le type de fruit/légume",
-                            "Dans des sacs plastiques fermés"
+                        type: 'dragdrop',
+                        text: "Classez les aliments par zone du réfrigérateur :",
+                        categories: {
+                            "Étage supérieur (+ chaud)": [],
+                            "Étage milieu": [],
+                            "Étage inférieur (+ froid)": []
+                        },
+                        items: [
+                            "Viandes crues",
+                            "Produits laitiers",
+                            "Restes de repas",
+                            "Poissons crus",
+                            "Fruits",
+                            "Légumes"
                         ],
-                        correct: 2,
-                        topic: "Conservation fruits et légumes"
+                        correct: {
+                            "Étage supérieur (+ chaud)": "Produits laitiers",
+                            "Étage milieu": "Restes de repas",
+                            "Étage inférieur (+ froid)": "Viandes crues"
+                        },
+                        topic: "Organisation du réfrigérateur"
                     },
                     {
                         text: "Un produit dont la DLC est dépassée :",
@@ -1774,16 +1818,24 @@
                         topic: "Cuisson viande hachée"
                     },
                     {
-                        text: "Pour les femmes enceintes, il est recommandé de :",
-                        options: [
-                            "Manger tout type de viande",
-                            "Éviter les viandes et poissons crus ou peu cuits",
-                            "Privilégier le carpaccio",
-                            "Manger saignant"
-                        ],
-                        correct: 1,
-                        topic: "Populations fragiles"
-                    }
+                        type: 'matching',
+                        text: "Associez chaque viande à sa température de cuisson minimale :",
+                        pairs: {
+                            "Poulet": "75°C",
+                            "Porc": "63°C",
+                            "Steak": "Saisie en surface",
+                            "Viande hachée": "71°C",
+                            "Fruits de mer": "Opaque et ferme"
+                        },
+                        correct: {
+                            "Poulet": "75°C",
+                            "Porc": "63°C",
+                            "Steak": "Saisie en surface",
+                            "Viande hachée": "71°C",
+                            "Fruits de mer": "Opaque et ferme"
+                        },
+                        topic: "Cuisson viande"
+                    },
                 ]
             },
             {
