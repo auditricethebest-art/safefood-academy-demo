@@ -782,6 +782,26 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
 
+        /* Interactive Questions */
+        .matching-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .matching-column { display: flex; flex-direction: column; gap: 0.5rem; }
+        .matching-item { padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; background: white; transition: all 0.3s; }
+        .matching-item.selected { border-color: var(--primary); background: rgba(77, 124, 42, 0.1); }
+        .matching-item.connected { background: rgba(77, 124, 42, 0.05); border-color: var(--primary-light); }
+
+        .ranking-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+        .ranking-item { padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; background: white; display: flex; align-items: center; gap: 0.5rem; cursor: move; user-select: none; }
+        .ranking-item.dragging { opacity: 0.5; }
+        .ranking-item-drag-handle { color: var(--primary); font-weight: bold; cursor: grab; }
+        .ranking-item-number { display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; background: var(--primary); color: white; border-radius: 50%; font-size: 0.8rem; font-weight: 700; }
+
+        .category-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .category-box { border: 2px dashed var(--border); border-radius: 8px; padding: 0.75rem; min-height: 120px; background: rgba(77, 124, 42, 0.02); }
+        .category-box-title { font-weight: 700; margin-bottom: 0.5rem; color: var(--primary); }
+        .draggable-item { padding: 0.5rem 0.75rem; background: var(--accent); color: white; border-radius: 6px; margin: 0.25rem 0; cursor: grab; user-select: none; }
+        .draggable-item.dragging { opacity: 0.5; }
+        .category-box.drag-over { background: rgba(77, 124, 42, 0.1); border-color: var(--primary); }
+
         /* Modal (login / admin) */
         .modal-backdrop {
             position: fixed;
@@ -2206,11 +2226,31 @@
             document.getElementById('questionText').textContent = question.text;
 
             const optionsContainer = document.getElementById('quizOptions');
-            optionsContainer.innerHTML = question.options.map((option, index) => `
-                <div class="quiz-option" onclick="selectOption(${index})">
-                    ${option}
-                </div>
-            `).join('');
+
+            // Check if question is interactive type
+            if (question.type === 'matching') {
+                optionsContainer.innerHTML = '';
+                initMatchingQuestion('quizOptions', question.pairs);
+                userAnswers[currentQuestionIndex] = {};
+            } 
+            else if (question.type === 'ranking') {
+                optionsContainer.innerHTML = '';
+                initRankingQuestion('quizOptions', question.items);
+                userAnswers[currentQuestionIndex] = [];
+            } 
+            else if (question.type === 'dragdrop') {
+                optionsContainer.innerHTML = '';
+                initDragDropQuestion('quizOptions', question.categories, question.items);
+                userAnswers[currentQuestionIndex] = {};
+            } 
+            else {
+                // Default: multiple choice
+                optionsContainer.innerHTML = question.options.map((option, index) => `
+                    <div class="quiz-option" onclick="selectOption(${index})">
+                        ${option}
+                    </div>
+                `).join('');
+            }
 
             // Update navigation buttons
             document.getElementById('prevBtn').style.visibility = currentQuestionIndex > 0 ? 'visible' : 'hidden';
@@ -2219,19 +2259,44 @@
         }
 
         function selectOption(optionIndex) {
-            // Clear previous selection
-            document.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
+            const question = currentQuiz.questions[currentQuestionIndex];
+            
+            // Only for multiple choice questions
+            if (question.type !== 'matching' && question.type !== 'ranking' && question.type !== 'dragdrop') {
+                // Clear previous selection
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
 
-            // Mark selected
-            document.querySelectorAll('.quiz-option')[optionIndex].classList.add('selected');
-            userAnswers[currentQuestionIndex] = optionIndex;
+                // Mark selected
+                document.querySelectorAll('.quiz-option')[optionIndex].classList.add('selected');
+                userAnswers[currentQuestionIndex] = optionIndex;
+            }
         }
 
         function nextQuestion() {
-            if (userAnswers[currentQuestionIndex] === undefined) {
-                alert('Veuillez sélectionner une réponse');
+            const question = currentQuiz.questions[currentQuestionIndex];
+            let hasAnswer = false;
+
+            // Check if answer is provided based on question type
+            if (question.type === 'matching') {
+                const answers = getMatchingAnswers ? getMatchingAnswers() : {};
+                hasAnswer = Object.keys(answers).length > 0;
+            } 
+            else if (question.type === 'ranking') {
+                const answers = getRankingAnswers ? getRankingAnswers() : [];
+                hasAnswer = answers.length > 0;
+            } 
+            else if (question.type === 'dragdrop') {
+                const answers = getDragDropAnswers ? getDragDropAnswers() : {};
+                hasAnswer = Object.keys(answers).length > 0;
+            } 
+            else {
+                hasAnswer = userAnswers[currentQuestionIndex] !== undefined;
+            }
+
+            if (!hasAnswer) {
+                alert('Veuillez fournir une réponse');
                 return;
             }
 
@@ -2256,7 +2321,32 @@
             const weakTopics = new Set();
 
             currentQuiz.questions.forEach((question, index) => {
-                if (userAnswers[index] === question.correct) {
+                let isCorrect = false;
+
+                if (question.type === 'matching') {
+                    const answers = getMatchingAnswers ? getMatchingAnswers() : {};
+                    isCorrect = JSON.stringify(answers) === JSON.stringify(question.correct);
+                } 
+                else if (question.type === 'ranking') {
+                    const answers = getRankingAnswers ? getRankingAnswers() : [];
+                    isCorrect = JSON.stringify(answers) === JSON.stringify(question.correct);
+                } 
+                else if (question.type === 'dragdrop') {
+                    const answers = getDragDropAnswers ? getDragDropAnswers() : {};
+                    isCorrect = true;
+                    for (let i = 0; i < Object.keys(question.correct).length; i++) {
+                        if (answers[i] !== question.correct[i]) {
+                            isCorrect = false;
+                            break;
+                        }
+                    }
+                } 
+                else {
+                    // Multiple choice
+                    isCorrect = userAnswers[index] === question.correct;
+                }
+
+                if (isCorrect) {
                     correctAnswers++;
                 } else {
                     weakTopics.add(question.topic);
@@ -2557,5 +2647,8 @@
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', initApp);
     </script>
+    
+    <!-- Interactive Questions Library -->
+    <script src="interactive-questions.js"></script>
 </body>
 </html>
