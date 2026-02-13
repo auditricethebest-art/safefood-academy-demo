@@ -1299,11 +1299,11 @@
                     {
                         type: 'dragdrop',
                         text: "Classez les étapes du nettoyage dans les bonnes catégories :",
-                        categories: {
-                            "Avant le nettoyage": [],
-                            "Pendant le nettoyage": [],
-                            "Après le nettoyage": []
-                        },
+                        categories: [
+                            "Avant le nettoyage",
+                            "Pendant le nettoyage",
+                            "Après le nettoyage"
+                        ],
                         items: [
                             "Enlever les résidus visibles",
                             "Appliquer le produit de nettoyage",
@@ -1313,9 +1313,9 @@
                             "Ranger l'ustensile"
                         ],
                         correct: {
-                            "Avant le nettoyage": "Enlever les résidus visibles",
-                            "Pendant le nettoyage": "Appliquer le produit de nettoyage",
-                            "Après le nettoyage": "Rincer à l'eau chaude"
+                            "0": "Avant le nettoyage",
+                            "1": "Pendant le nettoyage",
+                            "2": "Après le nettoyage"
                         },
                         topic: "Nettoyage et désinfection"
                     },
@@ -1686,11 +1686,11 @@
                     {
                         type: 'dragdrop',
                         text: "Classez les aliments par zone du réfrigérateur :",
-                        categories: {
-                            "Étage supérieur (+ chaud)": [],
-                            "Étage milieu": [],
-                            "Étage inférieur (+ froid)": []
-                        },
+                        categories: [
+                            "Étage supérieur (+ chaud)",
+                            "Étage milieu",
+                            "Étage inférieur (+ froid)"
+                        ],
                         items: [
                             "Viandes crues",
                             "Produits laitiers",
@@ -1700,9 +1700,9 @@
                             "Légumes"
                         ],
                         correct: {
-                            "Étage supérieur (+ chaud)": "Produits laitiers",
-                            "Étage milieu": "Restes de repas",
-                            "Étage inférieur (+ froid)": "Viandes crues"
+                            "0": "Étage inférieur (+ froid)",
+                            "1": "Étage supérieur (+ chaud)",
+                            "2": "Étage milieu"
                         },
                         topic: "Organisation du réfrigérateur"
                     },
@@ -2282,7 +2282,19 @@
             // Check if question is interactive type
             if (question.type === 'matching') {
                 optionsContainer.innerHTML = '';
-                initMatchingQuestion('quizOptions', question.pairs);
+                
+                // Convert pairs object to array format for initMatchingQuestion
+                let pairsArray = [];
+                if (typeof question.pairs === 'object' && !Array.isArray(question.pairs)) {
+                    // It's an object, convert to array
+                    Object.keys(question.pairs).forEach(key => {
+                        pairsArray.push({ question: key, answer: question.pairs[key] });
+                    });
+                } else {
+                    pairsArray = question.pairs;
+                }
+                
+                initMatchingQuestion('quizOptions', pairsArray);
                 userAnswers[currentQuestionIndex] = {};
             } 
             else if (question.type === 'ranking') {
@@ -2292,7 +2304,19 @@
             } 
             else if (question.type === 'dragdrop') {
                 optionsContainer.innerHTML = '';
-                initDragDropQuestion('quizOptions', question.categories, question.items);
+                
+                // Extract categories list from dragdrop question
+                let categories = [];
+                
+                if (Array.isArray(question.categories)) {
+                    categories = question.categories;
+                } else if (typeof question.categories === 'object') {
+                    categories = Object.keys(question.categories);
+                }
+                
+                let items = question.items || [];
+                
+                initDragDropQuestion('quizOptions', categories, items);
                 userAnswers[currentQuestionIndex] = {};
             } 
             else {
@@ -2334,14 +2358,23 @@
             if (question.type === 'matching') {
                 const answers = getMatchingAnswers ? getMatchingAnswers() : {};
                 hasAnswer = Object.keys(answers).length > 0;
+                if (hasAnswer) {
+                    userAnswers[currentQuestionIndex] = answers;
+                }
             } 
             else if (question.type === 'ranking') {
                 const answers = getRankingAnswers ? getRankingAnswers() : [];
                 hasAnswer = answers.length > 0;
+                if (hasAnswer) {
+                    userAnswers[currentQuestionIndex] = answers;
+                }
             } 
             else if (question.type === 'dragdrop') {
                 const answers = getDragDropAnswers ? getDragDropAnswers() : {};
                 hasAnswer = Object.keys(answers).length > 0;
+                if (hasAnswer) {
+                    userAnswers[currentQuestionIndex] = answers;
+                }
             } 
             else {
                 hasAnswer = userAnswers[currentQuestionIndex] !== undefined;
@@ -2376,22 +2409,26 @@
                 let isCorrect = false;
 
                 if (question.type === 'matching') {
-                    const answers = getMatchingAnswers ? getMatchingAnswers() : {};
-                    isCorrect = JSON.stringify(answers) === JSON.stringify(question.correct);
+                    // For matching questions, compare the structure
+                    const userAnswer = userAnswers[index] || {};
+                    const correctAnswer = question.correct || {};
+                    
+                    // Convert to comparable format (keys should match indices)
+                    isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
                 } 
                 else if (question.type === 'ranking') {
-                    const answers = getRankingAnswers ? getRankingAnswers() : [];
-                    isCorrect = JSON.stringify(answers) === JSON.stringify(question.correct);
+                    // For ranking questions, compare the array order
+                    const userAnswer = userAnswers[index] || [];
+                    const correctAnswer = question.correct || [];
+                    
+                    isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
                 } 
                 else if (question.type === 'dragdrop') {
-                    const answers = getDragDropAnswers ? getDragDropAnswers() : {};
-                    isCorrect = true;
-                    for (let i = 0; i < Object.keys(question.correct).length; i++) {
-                        if (answers[i] !== question.correct[i]) {
-                            isCorrect = false;
-                            break;
-                        }
-                    }
+                    // For drag-drop questions, compare category assignments
+                    const userAnswer = userAnswers[index] || {};
+                    const correctAnswer = question.correct || {};
+                    
+                    isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
                 } 
                 else {
                     // Multiple choice

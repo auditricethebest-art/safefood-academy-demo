@@ -11,21 +11,42 @@ function initMatchingQuestion(containerId, pairs) {
 
     let leftItems = [];
     let rightItems = [];
+    let pairMap = {}; // Store the original pairs data
 
-    pairs.forEach((pair, idx) => {
+    // Handle two formats: array of objects or direct pairs array
+    let pairsArray = [];
+    if (Array.isArray(pairs) && pairs.length > 0) {
+        if (pairs[0].question !== undefined) {
+            // Format: array of objects with question/answer
+            pairsArray = pairs;
+        } else {
+            pairsArray = pairs;
+        }
+    } else {
+        pairsArray = pairs;
+    }
+
+    pairsArray.forEach((pair, idx) => {
+        const question = pair.question || pair;
+        const answer = pair.answer || pair;
+        
+        pairMap[question] = answer;
+
         const leftItem = document.createElement('div');
         leftItem.className = 'matching-item';
-        leftItem.textContent = pair.question;
+        leftItem.textContent = question;
         leftItem.id = `left-${idx}`;
-        leftItem.onclick = () => selectLeft(idx);
+        leftItem.dataset.pairKey = question;
+        leftItem.onclick = () => selectLeft(idx, question);
         left.appendChild(leftItem);
         leftItems.push(leftItem);
 
         const rightItem = document.createElement('div');
         rightItem.className = 'matching-item';
-        rightItem.textContent = pair.answer;
+        rightItem.textContent = answer;
         rightItem.id = `right-${idx}`;
-        rightItem.onclick = () => selectRight(idx);
+        rightItem.dataset.pairValue = answer;
+        rightItem.onclick = () => selectRight(idx, question, answer);
         right.appendChild(rightItem);
         rightItems.push(rightItem);
     });
@@ -38,21 +59,24 @@ function initMatchingQuestion(containerId, pairs) {
     container.appendChild(matchingContainer);
 
     let selectedLeft = null;
+    let selectedLeftKey = null;
     let connections = {};
 
-    window.selectLeft = (idx) => {
+    window.selectLeft = (idx, key) => {
         leftItems.forEach(i => i.classList.remove('selected'));
         leftItems[idx].classList.add('selected');
         selectedLeft = idx;
+        selectedLeftKey = key;
     };
 
-    window.selectRight = (idx) => {
+    window.selectRight = (idx, key, value) => {
         if (selectedLeft !== null) {
-            connections[selectedLeft] = idx;
+            connections[selectedLeftKey] = value;
             leftItems[selectedLeft].classList.remove('selected');
             leftItems[selectedLeft].classList.add('connected');
             rightItems[idx].classList.add('connected');
             selectedLeft = null;
+            selectedLeftKey = null;
         }
     };
 
@@ -157,7 +181,7 @@ function initDragDropQuestion(containerId, categories, items) {
         items.forEach((_, idx) => {
             const itemEl = document.getElementById(`drag-item-${idx}`);
             const category = itemEl.dataset.category || 'non-classé';
-            answers[idx] = category;
+            answers[String(idx)] = category;
         });
         return answers;
     };
