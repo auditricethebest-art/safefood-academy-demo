@@ -1030,8 +1030,24 @@
                     <div class="results-score" id="finalScore" aria-live="polite">0%</div>
                     <p class="results-message" id="resultsMessage" aria-live="polite"></p>
                     <div id="badgeEarnedContainer"></div>
-                    <div class="recommended-articles" id="recommendedArticles"></div>
-                    <button class="btn btn-primary" onclick="showView('dashboard')" style="margin-top: 2rem;">
+                    
+                    <!-- Correction Tabs -->
+                    <div style="margin-top: 2rem; border-bottom: 2px solid var(--border); display: flex; gap: 1rem;">
+                        <button class="tab active" onclick="switchResultTab('summary', event)" style="flex: 0 0 auto;">Résumé</button>
+                        <button class="tab" onclick="switchResultTab('correction', event)" style="flex: 0 0 auto;">Voir la correction</button>
+                    </div>
+
+                    <!-- Summary View -->
+                    <div id="summaryView" class="tab-content active" style="text-align: left; margin-top: 1.5rem;">
+                        <div id="recommendedArticles"></div>
+                    </div>
+
+                    <!-- Correction View -->
+                    <div id="correctionView" class="tab-content" style="text-align: left; margin-top: 1.5rem; max-height: 600px; overflow-y: auto;">
+                        <div id="correctionContent"></div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="showView('dashboard')" style="margin-top: 2rem; width: 100%;">
                         Retour au tableau de bord
                     </button>
                 </div>
@@ -2535,6 +2551,9 @@
                 `;
             }
 
+            // Generate correction view
+            generateCorrection();
+
             updateStats();
             renderBadges();
         }
@@ -2715,6 +2734,88 @@
                 document.getElementById('articlesContent').classList.add('active');
                 renderArticles(); // Refresh articles with current recommendations
             }
+        }
+
+        function switchResultTab(tabName, evt) {
+            // Update tab buttons in results
+            document.querySelectorAll('#resultsView .tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+
+            // Update content
+            document.getElementById('summaryView').classList.remove('active');
+            document.getElementById('correctionView').classList.remove('active');
+
+            if (tabName === 'summary') {
+                document.getElementById('summaryView').classList.add('active');
+            } else if (tabName === 'correction') {
+                document.getElementById('correctionView').classList.add('active');
+            }
+        }
+
+        function generateCorrection() {
+            let correctionHTML = '';
+            
+            currentQuiz.questions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                let isCorrect = false;
+                let userAnswerText = '';
+                let correctAnswerText = '';
+
+                // Determine if answer is correct based on type
+                if (question.type === 'matching') {
+                    isCorrect = JSON.stringify(userAnswer || {}) === JSON.stringify(question.correct || {});
+                    userAnswerText = Object.entries(userAnswer || {}).map(([k, v]) => `${k} → ${v}`).join(', ') || 'Aucune réponse';
+                    correctAnswerText = Object.entries(question.correct || {}).map(([k, v]) => `${k} → ${v}`).join(', ');
+                } else if (question.type === 'ranking') {
+                    isCorrect = JSON.stringify(userAnswer || []) === JSON.stringify(question.correct || []);
+                    const userItems = (userAnswer || []).map(idx => currentQuiz.questions[index]?.items?.[idx] || idx).join(' → ');
+                    const correctItems = (question.correct || []).map(idx => currentQuiz.questions[index]?.items?.[idx] || idx).join(' → ');
+                    userAnswerText = userItems || 'Aucune réponse';
+                    correctAnswerText = correctItems;
+                } else if (question.type === 'dragdrop') {
+                    isCorrect = JSON.stringify(userAnswer || {}) === JSON.stringify(question.correct || {});
+                    const userEntries = Object.entries(userAnswer || {}).map(([k, v]) => `${currentQuiz.questions[index]?.items?.[k] || k}: ${v}`).join(', ');
+                    const correctEntries = Object.entries(question.correct || {}).map(([k, v]) => `${currentQuiz.questions[index]?.items?.[k] || k}: ${v}`).join(', ');
+                    userAnswerText = userEntries || 'Aucune réponse';
+                    correctAnswerText = correctEntries;
+                } else {
+                    // Multiple choice
+                    isCorrect = userAnswer === question.correct;
+                    userAnswerText = userAnswer !== undefined ? question.options[userAnswer] : 'Aucune réponse';
+                    correctAnswerText = question.options[question.correct];
+                }
+
+                const statusClass = isCorrect ? 'success' : 'danger';
+                const statusEmoji = isCorrect ? '✓' : '✗';
+                const statusText = isCorrect ? 'Correct' : 'Incorrect';
+
+                correctionHTML += `
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; border-left: 4px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'}; background: ${isCorrect ? 'rgba(38, 222, 129, 0.05)' : 'rgba(252, 92, 101, 0.05)'}; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 700; font-size: 1.2rem; color: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">${statusEmoji}</span>
+                            <span style="font-weight: 600; color: var(--text-dark);">Question ${index + 1} — ${question.topic}</span>
+                            <span style="font-size: 0.8rem; padding: 0.2rem 0.6rem; background: ${isCorrect ? 'var(--success)' : 'var(--danger)'}; color: white; border-radius: 4px; margin-left: auto;">${statusText}</span>
+                        </div>
+                        <p style="margin-bottom: 0.75rem; color: var(--text-dark); font-weight: 500;">${question.text}</p>
+                        <div style="margin: 0.75rem 0; font-size: 0.9rem;">
+                            <div style="margin-bottom: 0.5rem;">
+                                <span style="color: var(--text-medium);">Votre réponse :</span>
+                                <span style="color: ${isCorrect ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">${userAnswerText}</span>
+                            </div>
+                            ${!isCorrect ? `
+                                <div>
+                                    <span style="color: var(--text-medium);">Bonne réponse :</span>
+                                    <span style="color: var(--success); font-weight: 600;">${correctAnswerText}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('correctionContent').innerHTML = correctionHTML;
         }
 
         function showView(viewName) {
