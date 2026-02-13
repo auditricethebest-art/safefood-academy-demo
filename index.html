@@ -1043,7 +1043,7 @@
                     </div>
 
                     <!-- Correction View -->
-                    <div id="correctionView" class="tab-content" style="text-align: left; margin-top: 1.5rem; max-height: 600px; overflow-y: auto;">
+                    <div id="correctionView" class="tab-content" style="text-align: left; margin-top: 1.5rem;">
                         <div id="correctionContent"></div>
                     </div>
 
@@ -2737,20 +2737,26 @@
         }
 
         function switchResultTab(tabName, evt) {
-            // Update tab buttons in results
-            document.querySelectorAll('#resultsView .tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+            // Update tab buttons in results - find the parent results-container and get tabs within
+            const resultsContainer = document.querySelector('.results-container');
+            if (resultsContainer) {
+                resultsContainer.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+            }
             if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
 
             // Update content
-            document.getElementById('summaryView').classList.remove('active');
-            document.getElementById('correctionView').classList.remove('active');
+            const summaryView = document.getElementById('summaryView');
+            const correctionView = document.getElementById('correctionView');
+            
+            if (summaryView) summaryView.classList.remove('active');
+            if (correctionView) correctionView.classList.remove('active');
 
-            if (tabName === 'summary') {
-                document.getElementById('summaryView').classList.add('active');
-            } else if (tabName === 'correction') {
-                document.getElementById('correctionView').classList.add('active');
+            if (tabName === 'summary' && summaryView) {
+                summaryView.classList.add('active');
+            } else if (tabName === 'correction' && correctionView) {
+                correctionView.classList.add('active');
             }
         }
 
@@ -2770,14 +2776,14 @@
                     correctAnswerText = Object.entries(question.correct || {}).map(([k, v]) => `${k} → ${v}`).join(', ');
                 } else if (question.type === 'ranking') {
                     isCorrect = JSON.stringify(userAnswer || []) === JSON.stringify(question.correct || []);
-                    const userItems = (userAnswer || []).map(idx => currentQuiz.questions[index]?.items?.[idx] || idx).join(' → ');
-                    const correctItems = (question.correct || []).map(idx => currentQuiz.questions[index]?.items?.[idx] || idx).join(' → ');
+                    const userItems = (userAnswer || []).map(idx => question.items?.[idx] || idx).join(' → ');
+                    const correctItems = (question.correct || []).map(idx => question.items?.[idx] || idx).join(' → ');
                     userAnswerText = userItems || 'Aucune réponse';
                     correctAnswerText = correctItems;
                 } else if (question.type === 'dragdrop') {
                     isCorrect = JSON.stringify(userAnswer || {}) === JSON.stringify(question.correct || {});
-                    const userEntries = Object.entries(userAnswer || {}).map(([k, v]) => `${currentQuiz.questions[index]?.items?.[k] || k}: ${v}`).join(', ');
-                    const correctEntries = Object.entries(question.correct || {}).map(([k, v]) => `${currentQuiz.questions[index]?.items?.[k] || k}: ${v}`).join(', ');
+                    const userEntries = Object.entries(userAnswer || {}).map(([k, v]) => `${question.items?.[k] || k}: ${v}`).join(', ');
+                    const correctEntries = Object.entries(question.correct || {}).map(([k, v]) => `${question.items?.[k] || k}: ${v}`).join(', ');
                     userAnswerText = userEntries || 'Aucune réponse';
                     correctAnswerText = correctEntries;
                 } else {
@@ -2815,7 +2821,13 @@
                 `;
             });
 
-            document.getElementById('correctionContent').innerHTML = correctionHTML;
+            const correctionEl = document.getElementById('correctionContent');
+            if (correctionEl) {
+                correctionEl.innerHTML = correctionHTML;
+                console.log('Correction générée avec ' + currentQuiz.questions.length + ' questions');
+            } else {
+                console.error('Element correctionContent non trouvé');
+            }
         }
 
         function showView(viewName) {
